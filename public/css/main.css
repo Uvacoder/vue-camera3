@@ -1,0 +1,139 @@
+/*
+ *  Copyright (c) 2015 The WebRTC project authors. All Rights Reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+ */
+.hidden {
+  display: none;
+}
+
+
+ @media screen and (min-width: 1000px) {
+
+  /* hack! to detect non-touch devices */
+  div#links a {
+    line-height: 0.8em;
+  }
+} 
+
+
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  margin: 0;
+  padding: 1em;
+}
+
+
+canvas {
+  background-color: #ccc;
+  max-width: 100%;
+  width: 100%;
+}
+
+
+
+@media screen and (min-width: 550px) {
+  div#container {
+    margin: 1rem auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1rem;
+    /* max-width: 60em; */
+    /* padding: 1em 1.5em 1.3em 1.5em; */
+  }
+}
+
+
+
+h1 {
+  border-bottom: 1px solid #ccc;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  margin: 0 0 0.8em 0;
+  padding: 0 0 0.2em 0;
+}
+
+h2 {
+  color: #444;
+  font-weight: 500;
+}
+
+h3 {
+  border-top: 1px solid #eee;
+  color: #666;
+  font-weight: 500;
+  margin: 10px 0 10px 0;
+  white-space: nowrap;
+}
+
+li {
+  margin: 0 0 0.4em 0;
+}
+/* 
+html {
+
+  overflow-y: scroll;
+} */
+
+img {
+  border: none;
+  max-width: 100%;
+}
+
+
+a {
+  color: #6fa8dc;
+  font-weight: 300;
+  text-decoration: none;
+}
+
+
+a:hover {
+  color: #3d85c6;
+  text-decoration: underline;
+}
+
+
+video {
+  background: #222;
+  margin: 0 0 20px 0;
+  /* --width: 100%; */
+  width: 100%;
+  height: 100%;
+}
+
+ul {
+  margin: 0 0 0.5em 0;
+}
+
+
+.gallery {
+  margin: 10px;
+}
+
+.gallery img {
+  margin-left: 16px;
+}
+
+.upload-form {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+ 
+.action-group button{
+  background-color: black;
+  color: white;
+}
+
+.action-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  grid-gap: 5px;
+}
