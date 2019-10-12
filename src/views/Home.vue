@@ -1,7 +1,8 @@
 <template>
   <div class="home">
-        <h1>Photos</h1>
-
+   
+       
+       
     <camera></camera>
   </div>
 </template>

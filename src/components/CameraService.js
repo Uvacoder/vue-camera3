@@ -102,8 +102,9 @@ class Camera {
       this.currentStream.getTracks().forEach(track => {
         track.stop();
       });
+      this.video.srcObject = null;
     }
-    this.video.srcObject = null;
+   
     this.video.removeAttribute('src');
     this.video.load();
     this.canvas.getContext('2d').clearRect(0, 0, this.canvas.width, this.canvas.height);
