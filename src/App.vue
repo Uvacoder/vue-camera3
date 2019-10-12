@@ -1,13 +1,52 @@
 <template>
   <div id="app">
-     <nav class="navbar navbar-light bg-light justify-content-between">
-  <a class="navbar-brand">Camera</a>
-  
-  <div>
-    <a class="settings" href=""><i class="settings fas fa-cog"></i></a>
-    </div>
-  <!-- </form> -->
-</nav>
+    <nav class="navbar navbar-light bg-light justify-content-between">
+      <a class="navbar-brand">Camera</a>
+
+      <div>
+        <b-button v-b-modal.modal-prevent-closing>
+          <i class="settings fas fa-cog"></i>
+        </b-button>
+
+        <b-modal
+          id="modal-prevent-closing"
+          ref="modal"
+          title="Cloudinary Upload Info"
+          @show="resetModal"
+          @hidden="resetModal"
+          @ok="handleOk"
+        >
+          <form ref="form" @submit.stop.prevent="updateSettings">
+            <b-form-group
+              :state="cloudNameState"
+              label="Cloudname"
+              label-for="cloud-name-input"
+              invalid-feedback="Cloudname is required"
+            >
+              <b-form-input id="cloud-name-input" v-model="cloudname" :state="cloudNameState" required></b-form-input>
+            </b-form-group>
+            <b-form-group
+              :state="presetState"
+              label="Preset"
+              label-for="preset-input"
+              invalid-feedback="Preset is required"
+            >
+              <b-form-input id="preset-input" v-model="preset" :state="presetState" required></b-form-input>
+            </b-form-group>
+          </form>
+        </b-modal>
+
+        <!-- <b-button v-b-modal.modal-prevent-closing>Open Modal</b-button> -->
+
+        <!-- <div class="mt-3"> -->
+        <!-- Submitted Names: -->
+        <!-- <div v-if="submittedNames.length === 0">--</div> -->
+        <!-- <ul v-else class="mb-0 pl-3">
+        <li v-for="name in submittedNames">{{ name }}</li>
+        </ul>-->
+        <!-- </div> -->
+      </div>
+    </nav>
     <Home />
   </div>
 </template>
@@ -19,25 +58,72 @@ export default {
   name: "app",
   components: {
     Home
+  },
+  created: function() {
+    if (this.$ls.get("cloudname")) {
+      this.cloudname = this.$ls.get("cloudname");
+    }
+    if (this.$ls.get("preset")) {
+      this.preset = this.$ls.get("preset");
+    }
+  },
+  data() {
+    return {
+      cloudname: "",
+      cloudNameState: null,
+      preset: "",
+      presetState: null
+    };
+  },
+  methods: {
+    checkFormValidity() {
+      const valid = this.$refs.form.checkValidity();
+      this.nameState = valid ? "valid" : "invalid";
+      return valid;
+    },
+    resetModal() {
+      this.cloudName = "";
+      this.cloudNameState = null;
+      this.preset = "";
+      this.presetState = null;
+    },
+    handleOk(bvModalEvt) {
+      // Prevent modal from closing
+      bvModalEvt.preventDefault();
+      // Trigger submit handler
+      this.handleSubmit();
+    },
+    handleSubmit() {
+      // Exit when the form isn't valid
+      if (!this.checkFormValidity()) {
+        return;
+      }
+      // update local storage
+      this.$ls.set("cloudname", this.cloudname);
+      this.$ls.set("preset", this.preset);
+      // Hide the modal manually
+      this.$nextTick(() => {
+        this.$refs.modal.hide();
+      });
+    }
   }
 };
 </script>
 
 <style>
 #app {
-  /* font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Roboto", "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px; */
+  /* margin-top: 60px;  */
 }
 a.settings {
   color: black;
 }
-.settings i { 
-    font-size: 1rem;
-    vertical-align: middle;
+.settings i {
+  font-size: 1rem;
 }
 .brand {
   font-size: 3rem;
