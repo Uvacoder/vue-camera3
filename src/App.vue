@@ -1,12 +1,13 @@
 <template>
   <div id="app">
-      <nav class="row">
-        <div class="two columns"><span class="brand">Camera</span></div>
-        <div class="one  column">
-          <button class="button"><i class="settings fas fa-cog"></i></button>
-        </div>
-        <div class="nine columns"></div>
-      </nav>
+     <nav class="navbar navbar-light bg-light justify-content-between">
+  <a class="navbar-brand">Camera</a>
+  
+  <div>
+    <a class="settings" href=""><i class="settings fas fa-cog"></i></a>
+    </div>
+  <!-- </form> -->
+</nav>
     <Home />
   </div>
 </template>
@@ -31,8 +32,11 @@ export default {
   color: #2c3e50;
   margin-top: 60px; */
 }
-.settings { 
-    font-size: 3rem;
+a.settings {
+  color: black;
+}
+.settings i { 
+    font-size: 1rem;
     vertical-align: middle;
 }
 .brand {
