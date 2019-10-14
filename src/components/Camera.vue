@@ -6,20 +6,14 @@
         <b-button :disabled="isStartEnabled" v-on:click="stop">Stop</b-button>
         <b-button :disabled="isStartEnabled" v-on:click="snapshot">Snapsot</b-button>
         <b-button :disabled="!isPhoto" v-on:click="download">Downlolad</b-button>
-       
+        <b-button :disabled="!isPhoto" v-on:click="upload">Upload</b-button>
       </b-button-group>
     </div>
-     <form class="">
-          <b-form-select v-model="selectedDevice" :options="options" size="sm" ></b-form-select>
-        </form>
+    <form class>
+      <b-form-select v-model="selectedDevice" :options="options" size="sm"></b-form-select>
+    </form>
 
-    <!-- <div class="action-group">
-      <button id="start-stream" :disabled="!isStartEnabled" v-on:click="start">Start</button>
-      <button id="stop-stream" :disabled="isStartEnabled" v-on:click="stop">Stop</button>
-      <button id="snapshot" :disabled="isStartEnabled" v-on:click="snapshot">Snapshot</button>
-      <button id="download" :disabled="!isPhoto" v-on:click="download">Download</button>
-      <select :disabled="!isPhoto" class="u-full-width" id="video-select"></select>
-    </div>-->
+
     <div id="container">
       <video playsinline autoplay></video>
       <canvas></canvas>
@@ -42,9 +36,26 @@
 </template>
 
 <script>
-// import CameraService from "@/components/CameraService";
-// const cameraService = new CameraService();
+async function upload(cloudName,preset,fileData) {
+  try{
+      let fd = new FormData();
+      fd.append("upload_preset", preset);
+      fd.append("tags", "browser_upload"); // Optional - add tag for image admin in Cloudinary
+      fd.append("file", fileData);
+      let res = await axios({
+        method: "post", 
+        url: `https://api.cloudinary.com/v1_1/${cloudName}/upload`,
+        data: fd 
+      })
+      console.log(res)
+      return res.data
+  } catch(err){
+    console.log("error upload:",err)
+  }
+}
 
+import cloudinary from "cloudinary-core";
+import axios from 'axios'
 export default {
   name: "Camera",
   data() {
@@ -63,9 +74,19 @@ export default {
     };
   },
   methods: {
+    upload:  function() {
+      console.log("upload");
+      let cloudname = this.$ls.get("cloudname");
+      let preset = this.$ls.get("preset")
+      if (cloudname === null || preset === null) {
+        console.log("error: upload missing cloudname or preset");
+        return;
+      }
+
+      data = upload(cloudname,preset,this.fileData)
+    },
     snapshot: function() {
       console.log("snapshot");
-      // this.camera.snapshot();
       this.canvas.width = this.video.videoWidth;
       this.canvas.height = this.video.videoHeight;
       this.canvas
@@ -187,12 +208,12 @@ select option:disabled {
   font-weight: bold;
 }
 select {
-  margin: .2rem 0;
+  margin: 0.2rem 0;
 }
-button{
-  /* margin-right: .2rem; */
-  /* width: 102px; */
-  /* width: 25%; */
-  font-size: .7rem  ;
+
+@media only screen and (max-width: 400px) {
+  button {
+    font-size: 0.6rem;
+  }
 }
 </style>

@@ -18,12 +18,12 @@
         >
           <form ref="form" @submit.stop.prevent="updateSettings">
             <b-form-group
-              :state="cloudNameState"
+              :state="cloudnameState"
               label="Cloudname"
               label-for="cloud-name-input"
               invalid-feedback="Cloudname is required"
             >
-              <b-form-input id="cloud-name-input" v-model="cloudname" :state="cloudNameState" required></b-form-input>
+              <b-form-input id="cloud-name-input" v-model="cloudname" :state="cloudnameState" required></b-form-input>
             </b-form-group>
             <b-form-group
               :state="presetState"
@@ -32,6 +32,18 @@
               invalid-feedback="Preset is required"
             >
               <b-form-input id="preset-input" v-model="preset" :state="presetState" required></b-form-input>
+            </b-form-group>
+            <b-form-group
+            >
+               <b-form-checkbox
+      id="clearsettings"
+      v-model="clearsettings"
+      name="clearsettings"
+      value="true"
+      unchecked-value="false"
+    >
+      Clear Settings
+    </b-form-checkbox>
             </b-form-group>
           </form>
         </b-modal>
@@ -70,9 +82,11 @@ export default {
   data() {
     return {
       cloudname: "",
-      cloudNameState: null,
+      cloudnameState: null,
       preset: "",
-      presetState: null
+      presetState: null,
+      clearsettings: "false",
+      expire: 3600000
     };
   },
   methods: {
@@ -82,8 +96,8 @@ export default {
       return valid;
     },
     resetModal() {
-      this.cloudName = "";
-      this.cloudNameState = null;
+      this.cloudname = "";
+      this.cloudnameState = null;
       this.preset = "";
       this.presetState = null;
     },
@@ -94,13 +108,19 @@ export default {
       this.handleSubmit();
     },
     handleSubmit() {
+      //clear local storage and return
+      if (this.clearsettings === "true"){
+        this.$ls.clear()
+        return
+      }
       // Exit when the form isn't valid
       if (!this.checkFormValidity()) {
+        console.log("settings data not valid")
         return;
       }
       // update local storage
-      this.$ls.set("cloudname", this.cloudname);
-      this.$ls.set("preset", this.preset);
+      this.$ls.set("cloudname", this.cloudname,this.expire);
+      this.$ls.set("preset", this.preset,this.expire);
       // Hide the modal manually
       this.$nextTick(() => {
         this.$refs.modal.hide();
