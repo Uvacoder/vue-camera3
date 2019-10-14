@@ -13,7 +13,6 @@
       <b-form-select v-model="selectedDevice" :options="options" size="sm"></b-form-select>
     </form>
 
-
     <div id="container">
       <video playsinline autoplay></video>
       <canvas></canvas>
@@ -36,26 +35,26 @@
 </template>
 
 <script>
-async function upload(cloudName,preset,fileData) {
-  try{
-      let fd = new FormData();
-      fd.append("upload_preset", preset);
-      fd.append("tags", "browser_upload"); // Optional - add tag for image admin in Cloudinary
-      fd.append("file", fileData);
-      let res = await axios({
-        method: "post", 
-        url: `https://api.cloudinary.com/v1_1/${cloudName}/upload`,
-        data: fd 
-      })
-      console.log(res)
-      return res.data
-  } catch(err){
-    console.log("error upload:",err)
+async function upload(cloudName, preset, fileData) {
+  try {
+    let fd = new FormData();
+    fd.append("upload_preset", preset);
+    fd.append("tags", "browser_upload"); // Optional - add tag for image admin in Cloudinary
+    fd.append("file", fileData);
+    let res = await axios({
+      method: "post",
+      url: `https://api.cloudinary.com/v1_1/${cloudName}/upload`,
+      data: fd
+    });
+    console.log(res);
+    return await res.data;
+  } catch (err) {
+    console.log("error upload:", err);
   }
 }
 
-import cloudinary from "cloudinary-core";
-import axios from 'axios'
+// import cloudinary from "cloudinary-core";
+import axios from "axios";
 export default {
   name: "Camera",
   data() {
@@ -74,16 +73,21 @@ export default {
     };
   },
   methods: {
-    upload:  function() {
+    upload: function() {
       console.log("upload");
       let cloudname = this.$ls.get("cloudname");
-      let preset = this.$ls.get("preset")
+      let preset = this.$ls.get("preset");
       if (cloudname === null || preset === null) {
         console.log("error: upload missing cloudname or preset");
         return;
       }
+      let data = upload(cloudname, preset, this.fileData);
 
-      data = upload(cloudname,preset,this.fileData)
+      this.$bvToast.toast(`Upload to Cloudinary successful`, {
+        title: "Cloudinary Upload",
+        autoHideDelay: 5000,
+        appendToast: false
+      });
     },
     snapshot: function() {
       console.log("snapshot");
