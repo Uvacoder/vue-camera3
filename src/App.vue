@@ -23,7 +23,12 @@
               label-for="cloud-name-input"
               invalid-feedback="Cloudname is required"
             >
-              <b-form-input id="cloud-name-input" v-model="cloudname" :state="cloudnameState" required></b-form-input>
+              <b-form-input
+                id="cloud-name-input"
+                v-model="cloudname"
+                :state="cloudnameState"
+                required
+              ></b-form-input>
             </b-form-group>
             <b-form-group
               :state="presetState"
@@ -33,17 +38,14 @@
             >
               <b-form-input id="preset-input" v-model="preset" :state="presetState" required></b-form-input>
             </b-form-group>
-            <b-form-group
-            >
-               <b-form-checkbox
-      id="clearsettings"
-      v-model="clearsettings"
-      name="clearsettings"
-      value="true"
-      unchecked-value="false"
-    >
-      Clear Settings
-    </b-form-checkbox>
+            <b-form-group>
+              <b-form-checkbox
+                id="clearsettings"
+                v-model="clearsettings"
+                name="clearsettings"
+                value="true"
+                unchecked-value="false"
+              >Clear Settings</b-form-checkbox>
             </b-form-group>
           </form>
         </b-modal>
@@ -59,7 +61,7 @@
         <!-- </div> -->
       </div>
     </nav>
-    <Home />
+    <Home :cloudname="cloudname" :preset="preset" />
   </div>
 </template>
 
@@ -74,6 +76,7 @@ export default {
   created: function() {
     if (this.$ls.get("cloudname")) {
       this.cloudname = this.$ls.get("cloudname");
+      console.log("App.vue cloudname", this.cloudname);
     }
     if (this.$ls.get("preset")) {
       this.preset = this.$ls.get("preset");
@@ -91,14 +94,15 @@ export default {
   },
   methods: {
     checkFormValidity() {
-      const valid = this.$refs.form.checkValidity();
-      this.nameState = valid ? "valid" : "invalid";
-      return valid;
+      // const valid = this.$refs.form.checkValidity();
+      // this.cloudnameState = valid ? "valid" : "invalid";
+      // return valid;
+      return true;
     },
     resetModal() {
-      this.cloudname = "";
+      this.cloudname = this.$ls.get("cloudname", "");
       this.cloudnameState = null;
-      this.preset = "";
+      this.preset = this.$ls.get("preset", "");
       this.presetState = null;
     },
     handleOk(bvModalEvt) {
@@ -109,18 +113,26 @@ export default {
     },
     handleSubmit() {
       //clear local storage and return
-      if (this.clearsettings === "true"){
-        this.$ls.clear()
-        return
-      }
-      // Exit when the form isn't valid
-      if (!this.checkFormValidity()) {
-        console.log("settings data not valid")
+      if (this.clearsettings === "true") {
+        this.$ls.clear();
+        this.cloudname = "";
+        this.preset = "";
+        this.clearsettings = "false"
+        this.$nextTick(() => {
+          this.$refs.modal.hide();
+        });
         return;
+      } else {
+        // Exit when the form isn't valid
+        if (!this.checkFormValidity()) {
+          console.log("settings data not valid");
+          return;
+        }
       }
+
       // update local storage
-      this.$ls.set("cloudname", this.cloudname,this.expire);
-      this.$ls.set("preset", this.preset,this.expire);
+      this.$ls.set("cloudname", this.cloudname, this.expire);
+      this.$ls.set("preset", this.preset, this.expire);
       // Hide the modal manually
       this.$nextTick(() => {
         this.$refs.modal.hide();

@@ -3,7 +3,7 @@
    
        
        
-    <camera></camera>
+    <camera :cloudname="cloudname" :preset="preset"></camera>
   </div>
 </template>
 
@@ -11,9 +11,7 @@
 import Camera from '@/components/Camera.vue'
 export default {
   name: 'Home',
-  props: {
-    msg: String
-  },
+  props: ['cloudname','preset'],
   components:{
     camera: Camera
   }

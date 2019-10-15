@@ -6,7 +6,7 @@
         <b-button :disabled="isStartEnabled" v-on:click="stop">Stop</b-button>
         <b-button :disabled="isStartEnabled" v-on:click="snapshot">Snapsot</b-button>
         <b-button :disabled="!isPhoto" v-on:click="download">Downlolad</b-button>
-        <b-button :disabled="!isPhoto" v-on:click="upload">Upload</b-button>
+        <b-button :disabled="!isPhoto || cloudname.length === 0 || preset.length === 0" v-on:click="upload">Upload</b-button>
       </b-button-group>
     </div>
     <form class>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-async function upload(cloudName, preset, fileData) {
+async function uploadToCloudinary(cloudName, preset, fileData) {
   try {
     let fd = new FormData();
     fd.append("upload_preset", preset);
@@ -69,19 +69,25 @@ export default {
       devices: [],
       options: [],
       constraints: {},
-      selectedDevice: "0"
+      selectedDevice: "0",
+      // cloudname: '',
+      // preset:''
     };
   },
   methods: {
     upload: function() {
       console.log("upload");
-      let cloudname = this.$ls.get("cloudname");
-      let preset = this.$ls.get("preset");
-      if (cloudname === null || preset === null) {
+     
+      if (this.cloudname.length === 0 || this.preset.length === 0) {
         console.log("error: upload missing cloudname or preset");
+        this.$bvToast.toast(`Upload to Cloudinary unsuccessful: use settings to provide cloudname and preset`, {
+        title: "Cloudinary Upload",
+        autoHideDelay: 5000,
+        appendToast: false
+      });
         return;
       }
-      let data = upload(cloudname, preset, this.fileData);
+      let data = uploadToCloudinary(this.cloudname, this.preset, this.fileData);
 
       this.$bvToast.toast(`Upload to Cloudinary successful`, {
         title: "Cloudinary Upload",
@@ -190,7 +196,9 @@ export default {
       console.log("devices", this.devices);
     }
   },
+  props:['cloudname','preset'],
   mounted() {
+    console.log('cloudname',this.cloudname)
     this.canvas = document.querySelector("canvas");
     this.video = document.querySelector("video");
     this.options.push({ text: "Select Device", value: 0 });
