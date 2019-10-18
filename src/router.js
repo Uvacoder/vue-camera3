@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/views/Home'
-// import Camera from '@/components/Camera.vue'
+import Camera from '@/components/Camera'
+import Gallery from '@/views/Gallery'
 
 
 Vue.use(Router)
@@ -13,11 +14,11 @@ export default new Router({
       name: 'home',
       component: Home
     },
-    // {
-    //   path: '/camera',
-    //   name: 'camera',
-    //   components: Camera
-    // }
+    { 
+      path: '/gallery',
+      name: 'gallery',
+      component: Gallery
+    }
    
   ]
 })

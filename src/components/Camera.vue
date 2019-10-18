@@ -6,7 +6,10 @@
         <b-button :disabled="isStartEnabled" v-on:click="stop">Stop</b-button>
         <b-button :disabled="isStartEnabled" v-on:click="snapshot">Snapsot</b-button>
         <b-button :disabled="!isPhoto" v-on:click="download">Downlolad</b-button>
-        <b-button :disabled="!isPhoto || cloudname.length === 0 || preset.length === 0" v-on:click="upload">Upload</b-button>
+        <b-button
+          :disabled="!isPhoto || settings.cloudname.length === 0 || settings.preset.length === 0"
+          v-on:click="upload"
+        >Upload</b-button>
       </b-button-group>
     </div>
     <form class>
@@ -17,24 +20,17 @@
       <video playsinline autoplay></video>
       <canvas></canvas>
     </div>
-    <form id="upload-form" class="upload-form">
+    <!-- <form id="upload-form" class="upload-form">
       <input type="text" name="cloud-name" value="picturecloud7" placeholder="Enter cloud name" />
       <input type="text" name="preset" value="bp_test_1" placeholder="Enter upload preset" />
       <button type="submit">Upload</button>
     </form>
-    <div id="gallery" />
-    <a
-      href="https://github.com/rebeccapeltz/vue-camera"
-      title="View source for this page on GitHub"
-      id="viewSource"
-    >
-      View
-      source on GitHub
-    </a>
+    <div id="gallery" />-->
   </div>
 </template>
 
 <script>
+
 async function uploadToCloudinary(cloudName, preset, fileData) {
   try {
     let fd = new FormData();
@@ -46,7 +42,7 @@ async function uploadToCloudinary(cloudName, preset, fileData) {
       url: `https://api.cloudinary.com/v1_1/${cloudName}/upload`,
       data: fd
     });
-    console.log(res);
+    // console.log(res);
     return await res.data;
   } catch (err) {
     console.log("error upload:", err);
@@ -54,7 +50,9 @@ async function uploadToCloudinary(cloudName, preset, fileData) {
 }
 
 // import cloudinary from "cloudinary-core";
-import axios from "axios";
+import axios from "axios"
+import { mapState } from 'vuex'
+
 export default {
   name: "Camera",
   data() {
@@ -69,25 +67,29 @@ export default {
       devices: [],
       options: [],
       constraints: {},
-      selectedDevice: "0",
+      selectedDevice: "0"
       // cloudname: '',
       // preset:''
     };
   },
+  computed: mapState(['settings']),
   methods: {
     upload: function() {
       console.log("upload");
-     
-      if (this.cloudname.length === 0 || this.preset.length === 0) {
+
+      if (this.settings.cloudname.length === 0 || this.settings.preset.length === 0) {
         console.log("error: upload missing cloudname or preset");
-        this.$bvToast.toast(`Upload to Cloudinary unsuccessful: use settings to provide cloudname and preset`, {
-        title: "Cloudinary Upload",
-        autoHideDelay: 5000,
-        appendToast: false
-      });
+        this.$bvToast.toast(
+          `Upload to Cloudinary unsuccessful: use settings to provide cloudname and preset`,
+          {
+            title: "Cloudinary Upload",
+            autoHideDelay: 5000,
+            appendToast: false
+          }
+        );
         return;
       }
-      let data = uploadToCloudinary(this.cloudname, this.preset, this.fileData);
+      let data = uploadToCloudinary(this.settings.cloudname, this.settings.preset, this.fileData);
 
       this.$bvToast.toast(`Upload to Cloudinary successful`, {
         title: "Cloudinary Upload",
@@ -178,7 +180,7 @@ export default {
       try {
         let allDevices = await navigator.mediaDevices.enumerateDevices();
         for (let mediaDevice of allDevices) {
-          console.log("enumerate", mediaDevice);
+          // console.log("enumerate", mediaDevice);
           if (mediaDevice.kind === "videoinput") {
             let option = {};
             option.text = mediaDevice.label;
@@ -188,6 +190,7 @@ export default {
           }
         }
         //default if only one
+
         if (this.options.length < 3)
           this.selectedDevice = this.options[1].value;
       } catch (err) {
@@ -196,9 +199,20 @@ export default {
       console.log("devices", this.devices);
     }
   },
-  props:['cloudname','preset'],
+  // props:['cloudname','preset'],
+  // created: function() {
+  //   this.$parent.$on("update-ls", function(payload) {
+  //     this.cloudname = payload.cloudname
+  //     this.preset = payload.preset
+  //   });
+  //},
   mounted() {
-    console.log('cloudname',this.cloudname)
+    //get cloudname and preset from local storage
+    // this.cloudname = Vue.ls.get("cloudname")
+    // this.preset = Vue.ls.get("preset")
+    //if these aren't set don't allow upload
+
+    console.log("camera mounted cloudname", this.settings.cloudname);
     this.canvas = document.querySelector("canvas");
     this.video = document.querySelector("video");
     this.options.push({ text: "Select Device", value: 0 });

@@ -27,3 +27,12 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+ <a
+      href="https://github.com/rebeccapeltz/vue-camera"
+      title="View source for this page on GitHub"
+      id="viewSource"
+    >
+      View
+      source on GitHub
+    </a>
