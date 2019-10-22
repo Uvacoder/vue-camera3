@@ -10,8 +10,8 @@
 
       <b-nav-item class="ml-auto">
         <div v-b-tooltip.hover title="Settings are required to upload photos.">
-          <b-button v-b-modal.modal-prevent-closing>
-            <i class="settings fas fa-cog"></i>
+          <b-button class="settings" v-b-modal.modal-prevent-closing>
+            <i class="fas fa-cog"></i>
           </b-button>
 
           <b-modal
@@ -237,23 +237,16 @@ export default {
 a.settings {
   color: black;
 }
+
+button.settings {
+  padding: 6px 12px;
+}
 .settings i {
   font-size: 1rem;
 }
-.nav-item a a{
+
+.nav-item a a {
   color: black;
   font-size: 1.5rem;
 }
-/* .brand {
-  display: inline-block;
-
-  margin-right: 1rem;
-  font-size: 1.25rem;
-  line-height: inherit;
-  white-space: nowrap;
-}
-.gallery-link {
-  margin-right: 3rem;
-} */
-
 </style>

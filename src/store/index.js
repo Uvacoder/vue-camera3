@@ -6,8 +6,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state: {
         settings: {
-            cloudname: 'picturecloud7',
-            preset: 'bp_test_1'
+            cloudname: '',
+            preset: ''
         }
     },
     mutations: {
