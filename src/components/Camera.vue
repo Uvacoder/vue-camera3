@@ -16,7 +16,7 @@
       <b-form-select
         v-model="selectedDevice"
         :options="options"
-        v-on:change="setConstraints()"
+        v-on:change="deviceChange()"
         size="sm"
       ></b-form-select>
     </form>
@@ -173,7 +173,11 @@ export default {
         console.log("getmedia", err);
       }
     },
-
+    deviceChange: function(){
+      this.setConstraints()
+      this.getMedia()
+      this.isStartEnabled = false
+    },
     setConstraints: function() {
       const videoContstraints = {};
       if (this.selectedDevice === 0) {
