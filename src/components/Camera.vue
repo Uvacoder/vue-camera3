@@ -173,9 +173,9 @@ export default {
         console.log("getmedia", err);
       }
     },
-    deviceChange: function(){
-      this.setConstraints()
-      this.start()
+    deviceChange: function() {
+      this.setConstraints();
+      this.start();
     },
     setConstraints: function() {
       const videoContstraints = {};
@@ -185,11 +185,12 @@ export default {
         videoContstraints.deviceId = {
           exact: this.selectedDevice
         };
+        alert(this.selectedDevice)
       }
       this.constraints = {
         video: videoContstraints,
         audio: false
-      }
+      };
     },
     getDevices: async function() {
       if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
@@ -210,8 +211,8 @@ export default {
         }
         //default if only one
 
-        if (this.options.length < 3)
-          this.selectedDevice = this.options[1].value;
+        // if (this.options.length < 3)
+        this.selectedDevice = this.options[1].value;
       } catch (err) {
         console.log("getDevices", err);
       }
@@ -235,7 +236,7 @@ export default {
     this.canvas = document.querySelector("canvas");
     this.video = document.querySelector("video");
     this.options.push({ text: "Select Device", value: 0 });
-    this.getDevices();
+    this.getDevices();    
     this.setConstraints();
     this.getMedia();
     this.isStartEnabled = false;
