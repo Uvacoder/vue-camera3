@@ -174,8 +174,8 @@ export default {
       }
     },
     deviceChange: function(){
-      this.getMedia()
-      this.isStartEnabled = false
+      this.setConstraints()
+      this.start()
     },
     setConstraints: function() {
       const videoContstraints = {};
