@@ -71,7 +71,7 @@ export default {
       devices: [],
       options: [],
       constraints: {},
-      selectedDevice: "0"
+      selectedDevice: 0
       // cloudname: '',
       // preset:''
     };
@@ -176,7 +176,7 @@ export default {
 
     setConstraints: function() {
       const videoContstraints = {};
-      if (this.selectedDevice === "0") {
+      if (this.selectedDevice === 0) {
         videoContstraints.facingMode = "environment";
       } else {
         videoContstraints.deviceId = {
