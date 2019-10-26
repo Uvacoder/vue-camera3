@@ -174,7 +174,6 @@ export default {
       }
     },
     deviceChange: function(){
-      this.setConstraints()
       this.getMedia()
       this.isStartEnabled = false
     },
