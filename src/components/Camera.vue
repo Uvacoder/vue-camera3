@@ -13,7 +13,12 @@
       </b-button-group>
     </div>
     <form class>
-      <b-form-select v-model="selectedDevice" :options="options" size="sm"></b-form-select>
+      <b-form-select
+        v-model="selectedDevice"
+        :options="options"
+        v-on:change="setConstraints()"
+        size="sm"
+      ></b-form-select>
     </form>
 
     <div id="container">
@@ -30,7 +35,6 @@
 </template>
 
 <script>
-
 async function uploadToCloudinary(cloudName, preset, fileData) {
   try {
     let fd = new FormData();
@@ -50,8 +54,8 @@ async function uploadToCloudinary(cloudName, preset, fileData) {
 }
 
 // import cloudinary from "cloudinary-core";
-import axios from "axios"
-import { mapState } from 'vuex'
+import axios from "axios";
+import { mapState } from "vuex";
 
 export default {
   name: "Camera",
@@ -72,12 +76,15 @@ export default {
       // preset:''
     };
   },
-  computed: mapState(['settings']),
+  computed: mapState(["settings"]),
   methods: {
     upload: function() {
       console.log("upload");
 
-      if (this.settings.cloudname.length === 0 || this.settings.preset.length === 0) {
+      if (
+        this.settings.cloudname.length === 0 ||
+        this.settings.preset.length === 0
+      ) {
         console.log("error: upload missing cloudname or preset");
         this.$bvToast.toast(
           `Upload to Cloudinary unsuccessful: use settings to provide cloudname and preset`,
@@ -89,7 +96,11 @@ export default {
         );
         return;
       }
-      let data = uploadToCloudinary(this.settings.cloudname, this.settings.preset, this.fileData);
+      let data = uploadToCloudinary(
+        this.settings.cloudname,
+        this.settings.preset,
+        this.fileData
+      );
 
       this.$bvToast.toast(`Upload to Cloudinary successful`, {
         title: "Cloudinary Upload",
@@ -164,13 +175,18 @@ export default {
     },
 
     setConstraints: function() {
-      // set constraints
+      const videoContstraints = {};
+      if (this.selectedDevice === "0") {
+        videoContstraints.facingMode = "environment";
+      } else {
+        videoContstraints.deviceId = {
+          exact: this.selectedDevice.value
+        };
+      }
       this.constraints = {
-        video: {
-          facingMode: "environment"
-        },
+        video: videoContstraints,
         audio: false
-      };
+      }
     },
     getDevices: async function() {
       if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
