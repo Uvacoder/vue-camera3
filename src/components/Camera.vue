@@ -183,7 +183,7 @@ export default {
         videoContstraints.facingMode = "environment";
       } else {
         videoContstraints.deviceId = {
-          exact: this.selectedDevice.value
+          exact: this.selectedDevice
         };
       }
       this.constraints = {
