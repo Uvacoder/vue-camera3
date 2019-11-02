@@ -58,63 +58,6 @@
         </div>
       </b-nav-item>
     </b-nav>
-    <!-- <nav class="navbar navbar-light bg-light justify-content-between">
-      <div>
-        <div v-on:click="toCamera" class="brand">Camera</div>
-      </div>
-      <div>
-        <div v-on:click="toGallery" class="gallery-link">Gallery</div>
-      </div>
-
-      <div>
-        <b-button v-b-modal.modal-prevent-closing>
-          <i class="settings fas fa-cog"></i>
-        </b-button>
-
-        <b-modal
-          id="modal-prevent-closing"
-          ref="modal"
-          title="Cloudinary Upload Info"
-          @show="resetModal"
-          @hidden="resetModal"
-          @ok="handleOk"
-        >
-          <form ref="form" @submit.stop.prevent="updateSettings">
-            <b-form-group
-              :state="cloudnameState"
-              label="Cloudname"
-              label-for="cloud-name-input"
-              invalid-feedback="Cloudname is required"
-            >
-              <b-form-input
-                id="cloud-name-input"
-                v-model="cloudname"
-                :state="cloudnameState"
-                required
-              ></b-form-input>
-            </b-form-group>
-            <b-form-group
-              :state="presetState"
-              label="Preset"
-              label-for="preset-input"
-              invalid-feedback="Preset is required"
-            >
-              <b-form-input id="preset-input" v-model="preset" :state="presetState" required></b-form-input>
-            </b-form-group>
-            <b-form-group>
-              <b-form-checkbox
-                id="clearsettings"
-                v-model="clearsettings"
-                name="clearsettings"
-                value="true"
-                unchecked-value="false"
-              >Clear Settings</b-form-checkbox>
-            </b-form-group>
-          </form>
-        </b-modal>
-      </div>
-    </nav>-->
-    <!-- <Home :cloudname="cloudname" :preset="preset" /> -->
     <router-view></router-view>
   </div>
 </template>
@@ -126,6 +69,7 @@ import { mapActions } from "vuex";
 export default {
   name: "app",
   created: function() {
+    console.log("App created", this.cloudname, this.preset);
     // if (this.$ls.get("cloudname")) {
     //   this.cloudname = this.$ls.get("cloudname");
     //   console.log("App.vue cloudname", this.cloudname);
@@ -133,7 +77,6 @@ export default {
     // if (this.$ls.get("preset")) {
     //   this.preset = this.$ls.get("preset");
     // }
-    console.log("App created", this.cloudname, this.preset);
   },
   data() {
     return {
@@ -172,10 +115,7 @@ export default {
       return true;
     },
     resetModal() {
-      // this.cloudname = this.$ls.get("cloudname", "");
-      // this.updateCloudname(cloudname)
       this.cloudnameState = null;
-      // this.preset = this.$ls.get("preset", "");
       this.presetState = null;
     },
     handleOk(bvModalEvt) {
@@ -187,15 +127,9 @@ export default {
     handleSubmit() {
       //clear local storage and return
       if (this.clearsettings === "true") {
-        // this.$ls.clear();
         this.cloudname = "";
         this.preset = "";
         this.clearsettings = "false";
-        // this.$emit("update-ls", {
-        //   cloudname: this.cloudname,
-        //   preset: this.preset
-        // });
-
         this.$nextTick(() => {
           this.$refs.modal.hide();
         });
@@ -211,10 +145,6 @@ export default {
       // update local storage
       // this.$ls.set("cloudname", this.cloudname, this.expire);
       // this.$ls.set("preset", this.preset, this.expire);
-      // this.$emit("update-ls", {
-      //   cloudname: this.cloudname,
-      //   preset: this.preset
-      // });
 
       // Hide the modal manually
       this.$nextTick(() => {
@@ -232,7 +162,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  /* margin-top: 60px;  */
 }
 a.settings {
   color: black;
