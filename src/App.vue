@@ -168,7 +168,7 @@ a.settings {
 }
 
 button.settings {
-  padding: 6px 12px;
+  /* padding: 6px 12px; */
 }
 .settings i {
   font-size: 1rem;
