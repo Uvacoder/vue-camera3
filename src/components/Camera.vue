@@ -29,15 +29,20 @@
 </template>
 
 <script>
+// https://cloudinary.com/documentation/image_upload_api_reference
+// https://codepen.io/team/Cloudinary/pen/Edxjbj
+// https://support.cloudinary.com/hc/en-us/articles/209754169-Is-it-possible-to-upload-directly-to-Cloudinary-using-pure-Javascript-code-
 async function uploadToCloudinary(cloudName, preset, fileData) {
   try {
     let fd = new FormData()
+    let url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`
+    console.log(url)
     fd.append("upload_preset", preset)
     fd.append("tags", "browser_upload") // Optional - add tag for image admin in Cloudinary
     fd.append("file", fileData)
     let res = await axios({
       method: "post",
-      url: `https://api.cloudinary.com/v1_1/${cloudName}/upload`,
+      url: url,
       data: fd
     })
     return await res.data
