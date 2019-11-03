@@ -156,6 +156,8 @@ export default {
     start: function() {
       console.log("start");
       this.stop();
+      //when starting up again use first option
+      this.selectedDevice = this.options[0].value
       this.getMedia().then((this.isStartEnabled = false));
     },
     download: function() {
@@ -191,21 +193,22 @@ export default {
       }
     },
     deviceChange: function() {
+      this.stop();
+      //don't change selected device
       this.setConstraints();
-      this.start();
+      this.getMedia().then((this.isStartEnabled = false));
     },
     setConstraints: function() {
       const videoContstraints = {};
       //set selected to highest option
-      this.selectedDevice = this.options[this.options.length - 1].value;
+      // this.selectedDevice = this.options[this.options.length - 1].value;
 
-      if (this.selectedDevice === 0) {
+      if (this.selectedDevice === null) {
         videoContstraints.facingMode = "environment";
       } else {
         videoContstraints.deviceId = {
           exact: this.selectedDevice
         };
-        // alert(this.selectedDevice);
       }
       this.constraints = {
         video: videoContstraints,
@@ -237,20 +240,15 @@ export default {
       console.log("devices", this.devices);
     }
   },
-  // props:['cloudname','preset'],
-  // created: function() {
-  //   this.$parent.$on("update-ls", function(payload) {
-  //     this.cloudname = payload.cloudname
-  //     this.preset = payload.preset
-  //   })
-  //},
   mounted() {
     console.log("camera mounted cloudname", this.settings.cloudname);
     this.canvas = document.querySelector("canvas");
     this.video = document.querySelector("video");
-    this.options.push({ text: "Select Device", value: "", disable: true });
+    // this.options.push({ text: "Select Device", value: "", disable: true });
     this.getDevices()
       .then(res => {
+        //when first loaded selected device can use 1st option
+        this.selectedDevice = this.options[0].value
         this.setConstraints();
       })
       .then(res => {
