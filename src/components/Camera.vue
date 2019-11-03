@@ -11,15 +11,15 @@
           v-on:click="upload"
         >Upload</b-button>
       </b-button-group>
+      <form class>
+        <b-form-select
+          v-model="selectedDevice"
+          :options="options"
+          v-on:change="deviceChange()"
+          size="sm"
+        ></b-form-select>
+      </form>
     </div>
-    <form class>
-      <b-form-select
-        v-model="selectedDevice"
-        :options="options"
-        v-on:change="deviceChange()"
-        size="sm"
-      ></b-form-select>
-    </form>
 
     <b-container>
       <b-row>
@@ -76,7 +76,7 @@ export default {
       devices: [],
       options: [],
       constraints: {},
-      selectedDevice: 0
+      selectedDevice: null
       // cloudname: '',
       // preset:''
     };
@@ -156,8 +156,7 @@ export default {
     start: function() {
       console.log("start");
       this.stop();
-      this.getMedia();
-      this.isStartEnabled = false;
+      this.getMedia().then((this.isStartEnabled = false));
     },
     download: function() {
       console.log("downlaod");
@@ -182,11 +181,12 @@ export default {
         this.stream = await navigator.mediaDevices.getUserMedia(
           this.constraints
         );
-        window.stream = this.stream;
-        // this.video.srcObject = stream
-        this.currentStream = stream;
-        this.video.srcObject = stream;
+        window.stream = this.stream
+        this.currentStream = stream
+        this.video.srcObject = stream
+        return true
       } catch (err) {
+        throw err;
         console.log("getmedia", err);
       }
     },
@@ -196,13 +196,16 @@ export default {
     },
     setConstraints: function() {
       const videoContstraints = {};
+      //set selected to highest option
+      this.selectedDevice = this.options[this.options.length - 1].value;
+
       if (this.selectedDevice === 0) {
         videoContstraints.facingMode = "environment";
       } else {
         videoContstraints.deviceId = {
           exact: this.selectedDevice
         };
-        alert(this.selectedDevice);
+        // alert(this.selectedDevice);
       }
       this.constraints = {
         video: videoContstraints,
@@ -212,7 +215,7 @@ export default {
     getDevices: async function() {
       if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
         console.log("enumerateDevices() not supported.");
-        return;
+        return false
       }
       try {
         let allDevices = await navigator.mediaDevices.enumerateDevices();
@@ -226,12 +229,10 @@ export default {
             this.devices.push(mediaDevice);
           }
         }
-        //default if only one
-
-        // if (this.options.length < 3)
-        this.selectedDevice = this.options[1].value;
+        return true;
       } catch (err) {
         console.log("getDevices", err);
+        throw err;
       }
       console.log("devices", this.devices);
     }
@@ -247,11 +248,17 @@ export default {
     console.log("camera mounted cloudname", this.settings.cloudname);
     this.canvas = document.querySelector("canvas");
     this.video = document.querySelector("video");
-    this.options.push({ text: "Select Device", value: 0 });
-    this.getDevices();
-    this.setConstraints();
-    this.getMedia();
-    this.isStartEnabled = false;
+    this.options.push({ text: "Select Device", value: "", disable: true });
+    this.getDevices()
+      .then(res => {
+        this.setConstraints();
+      })
+      .then(res => {
+        this.getMedia();
+      })
+      .then(res => {
+        this.isStartEnabled = false;
+      });
   }
 };
 </script>
@@ -267,19 +274,14 @@ select option:disabled {
   font-weight: bold;
 }
 form {
-  margin: 1rem;
-}
-
-.btn-group button {
-  margin: 0 1rem;
-  border-radius: 1rem;
-  width: 4rem;
-  font-size: 0.5rem;
+  margin: 1em;
 }
 
 @media only screen and (min-width: 600px) {
-  .actions {
-    margin: 1rem 2rem;
+  .btn-group button {
+    margin: 0 0.5em;
+    border-radius: 1em;
+    font-size: 0.5em;
   }
 }
 </style>
