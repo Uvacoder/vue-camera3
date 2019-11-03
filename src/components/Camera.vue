@@ -1,11 +1,11 @@
 <template>
   <div class="camera">
-    <div>
+    <div class="actions">
       <b-button-group>
         <b-button :disabled="!isStartEnabled" v-on:click="start">Start</b-button>
         <b-button :disabled="isStartEnabled" v-on:click="stop">Stop</b-button>
         <b-button :disabled="isStartEnabled" v-on:click="snapshot">Snapsot</b-button>
-        <b-button :disabled="!isPhoto" v-on:click="download">Downlolad</b-button>
+        <b-button :disabled="!isPhoto" v-on:click="download">Download</b-button>
         <b-button
           :disabled="!isPhoto || settings.cloudname.length === 0 || settings.preset.length === 0"
           v-on:click="upload"
@@ -13,12 +13,12 @@
       </b-button-group>
     </div>
     <form class>
-      <b-form-select
-        v-model="selectedDevice"
-        :options="options"
-        v-on:change="deviceChange()"
-        size="sm"
-      ></b-form-select>
+        <b-form-select
+          v-model="selectedDevice"
+          :options="options"
+          v-on:change="deviceChange()"
+          size="sm"
+        ></b-form-select>
     </form>
 
     <div id="container">
@@ -34,27 +34,27 @@
 // https://support.cloudinary.com/hc/en-us/articles/209754169-Is-it-possible-to-upload-directly-to-Cloudinary-using-pure-Javascript-code-
 async function uploadToCloudinary(cloudName, preset, fileData) {
   try {
-    let fd = new FormData()
-    let url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`
-    console.log(url)
-    fd.append("upload_preset", preset)
-    fd.append("tags", "browser_upload") // Optional - add tag for image admin in Cloudinary
-    fd.append("file", fileData)
+    let fd = new FormData();
+    let url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+    console.log(url);
+    fd.append("upload_preset", preset);
+    fd.append("tags", "browser_upload"); // Optional - add tag for image admin in Cloudinary
+    fd.append("file", fileData);
     let res = await axios({
       method: "post",
       url: url,
       data: fd
-    })
-    return await res.data
+    });
+    return await res.data;
   } catch (err) {
-    console.log("error upload:", err)
-    throw(err)
+    console.log("error upload:", err);
+    throw err;
   }
 }
 
 // import cloudinary from "cloudinary-core"
-import axios from "axios"
-import { mapState } from "vuex"
+import axios from "axios";
+import { mapState } from "vuex";
 
 export default {
   name: "Camera",
@@ -73,18 +73,18 @@ export default {
       selectedDevice: 0
       // cloudname: '',
       // preset:''
-    }
+    };
   },
   computed: mapState(["settings"]),
   methods: {
     upload: function() {
-      console.log("upload")
+      console.log("upload");
 
       if (
         this.settings.cloudname.length === 0 ||
         this.settings.preset.length === 0
       ) {
-        console.log("error: upload missing cloudname or preset")
+        console.log("error: upload missing cloudname or preset");
         this.$bvToast.toast(
           `Upload to Cloudinary unsuccessful: use settings to provide cloudname and preset`,
           {
@@ -92,8 +92,8 @@ export default {
             autoHideDelay: 5000,
             appendToast: false
           }
-        )
-        return
+        );
+        return;
       }
       uploadToCloudinary(
         this.settings.cloudname,
@@ -101,133 +101,133 @@ export default {
         this.fileData
       )
         .then(result => {
-          console.log(result)
+          console.log(result);
           this.$bvToast.toast(`Upload to Cloudinary successful`, {
             title: "Cloudinary Upload",
             autoHideDelay: 5000,
             appendToast: false
-          })
+          });
         })
         .catch(err => {
           this.$bvToast.toast(
-            `Upload to Cloudinary unsuccessful. Check settings`,
+            `Upload to Cloudinary unsuccessful. Check settings.`,
             {
               title: "Cloudinary Upload",
               autoHideDelay: 5000,
               appendToast: false
             }
-          )
-        })
+          );
+        });
     },
     snapshot: function() {
-      console.log("snapshot")
-      this.canvas.width = this.video.videoWidth
-      this.canvas.height = this.video.videoHeight
+      console.log("snapshot");
+      this.canvas.width = this.video.videoWidth;
+      this.canvas.height = this.video.videoHeight;
       this.canvas
         .getContext("2d")
-        .drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height)
-      this.fileData = this.canvas.toDataURL("image/jpeg")
-      this.isPhoto = true
+        .drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
+      this.fileData = this.canvas.toDataURL("image/jpeg");
+      this.isPhoto = true;
     },
     stop: function() {
-      console.log("stop")
-      this.video.pause()
+      console.log("stop");
+      this.video.pause();
       if (this.currentStream) {
         this.currentStream.getTracks().forEach(track => {
-          track.stop()
-        })
-        this.video.srcObject = null
+          track.stop();
+        });
+        this.video.srcObject = null;
       }
 
-      this.video.removeAttribute("src")
-      this.video.load()
+      this.video.removeAttribute("src");
+      this.video.load();
       this.canvas
         .getContext("2d")
-        .clearRect(0, 0, this.canvas.width, this.canvas.height)
-      this.isStartEnabled = true
-      this.isPhoto = false
+        .clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.isStartEnabled = true;
+      this.isPhoto = false;
     },
     start: function() {
-      console.log("start")
-      this.stop()
-      this.getMedia()
-      this.isStartEnabled = false
+      console.log("start");
+      this.stop();
+      this.getMedia();
+      this.isStartEnabled = false;
     },
     download: function() {
-      console.log("downlaod")
+      console.log("downlaod");
       if (this.fileData) {
-        console.log("download")
-        this.canvas.width = this.video.videoWidth
-        this.canvas.height = this.video.videoHeight
+        console.log("download");
+        this.canvas.width = this.video.videoWidth;
+        this.canvas.height = this.video.videoHeight;
         this.canvas
           .getContext("2d")
-          .drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height)
-        let a = document.createElement("a")
-        a.href = this.fileData
-        a.textContent = "photo"
-        a.target = "_blank"
-        a.download = "photo.jpeg"
-        document.querySelector("body").append(a)
-        a.click()
+          .drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
+        let a = document.createElement("a");
+        a.href = this.fileData;
+        a.textContent = "photo";
+        a.target = "_blank";
+        a.download = "photo.jpeg";
+        document.querySelector("body").append(a);
+        a.click();
       }
     },
     getMedia: async function() {
       try {
         this.stream = await navigator.mediaDevices.getUserMedia(
           this.constraints
-        )
-        window.stream = this.stream
+        );
+        window.stream = this.stream;
         // this.video.srcObject = stream
-        this.currentStream = stream
-        this.video.srcObject = stream
+        this.currentStream = stream;
+        this.video.srcObject = stream;
       } catch (err) {
-        console.log("getmedia", err)
+        console.log("getmedia", err);
       }
     },
     deviceChange: function() {
-      this.setConstraints()
-      this.start()
+      this.setConstraints();
+      this.start();
     },
     setConstraints: function() {
-      const videoContstraints = {}
+      const videoContstraints = {};
       if (this.selectedDevice === 0) {
-        videoContstraints.facingMode = "environment"
+        videoContstraints.facingMode = "environment";
       } else {
         videoContstraints.deviceId = {
           exact: this.selectedDevice
-        }
-        alert(this.selectedDevice)
+        };
+        alert(this.selectedDevice);
       }
       this.constraints = {
         video: videoContstraints,
         audio: false
-      }
+      };
     },
     getDevices: async function() {
       if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-        console.log("enumerateDevices() not supported.")
-        return
+        console.log("enumerateDevices() not supported.");
+        return;
       }
       try {
-        let allDevices = await navigator.mediaDevices.enumerateDevices()
+        let allDevices = await navigator.mediaDevices.enumerateDevices();
         for (let mediaDevice of allDevices) {
           // console.log("enumerate", mediaDevice)
           if (mediaDevice.kind === "videoinput") {
-            let option = {}
-            option.text = mediaDevice.label
-            option.value = mediaDevice.deviceId
-            this.options.push(option)
-            this.devices.push(mediaDevice)
+            let option = {};
+            option.text = mediaDevice.label;
+            option.value = mediaDevice.deviceId;
+            this.options.push(option);
+            this.devices.push(mediaDevice);
           }
         }
         //default if only one
 
         // if (this.options.length < 3)
-        this.selectedDevice = this.options[1].value
+        this.selectedDevice = this.options[1].value;
       } catch (err) {
-        console.log("getDevices", err)
+        console.log("getDevices", err);
       }
-      console.log("devices", this.devices)
+      console.log("devices", this.devices);
     }
   },
   // props:['cloudname','preset'],
@@ -238,34 +238,45 @@ export default {
   //   })
   //},
   mounted() {
-    console.log("camera mounted cloudname", this.settings.cloudname)
-    this.canvas = document.querySelector("canvas")
-    this.video = document.querySelector("video")
-    this.options.push({ text: "Select Device", value: 0 })
-    this.getDevices()
-    this.setConstraints()
-    this.getMedia()
-    this.isStartEnabled = false
+    console.log("camera mounted cloudname", this.settings.cloudname);
+    this.canvas = document.querySelector("canvas");
+    this.video = document.querySelector("video");
+    this.options.push({ text: "Select Device", value: 0 });
+    this.getDevices();
+    this.setConstraints();
+    this.getMedia();
+    this.isStartEnabled = false;
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 button:disabled {
-  background: gray;
+  background: lightgray;
+  color: black;
 }
 select option:disabled {
-  color: gray;
+  color: lightgray;
   font-weight: bold;
 }
-select {
-  margin: 0.2rem 0;
+/* select {
+  margin: 1rem;
+} */
+
+@media only screen and (max-width: 320px) {
+  button {
+    font-size: 0.5rem;
+  }
 }
 
-@media only screen and (max-width: 400px) {
-  button {
-    font-size: 0.6rem;
-  }
+.btn-group button {
+  margin: 0 5px;
+  border-radius: 1rem;
+  width: 4rem;
+  font-size: 0.5rem;
+}
+.actions {
+  margin: 1rem 2rem;
 }
 </style>

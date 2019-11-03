@@ -167,9 +167,7 @@ a.settings {
   color: black;
 }
 
-button.settings {
-  /* padding: 6px 12px; */
-}
+
 .settings i {
   font-size: 1rem;
 }
