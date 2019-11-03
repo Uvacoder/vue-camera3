@@ -39,7 +39,7 @@ export default {
 };
 </script>
 
-<style>
+<styles scoped>
 #images{
   width: 80%;
   height: 20%;

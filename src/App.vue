@@ -8,7 +8,7 @@
         <router-link to="/gallery">Gallery</router-link>
       </b-nav-item>
 
-      <b-nav-item class="ml-auto">
+      <b-nav-item>
         <div v-b-tooltip.hover title="Settings are required to upload photos.">
           <b-button class="settings" v-b-modal.modal-prevent-closing>
             <i class="fas fa-cog"></i>

@@ -36,3 +36,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
       View
       source on GitHub
     </a>
+
+
+https://ready.mobi/

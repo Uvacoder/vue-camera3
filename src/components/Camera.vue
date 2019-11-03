@@ -22,7 +22,7 @@
     </form>
 
     <b-container>
-      <b-row >
+      <b-row>
         <b-col sm="12" md="6">
           <video playsinline autoplay></video>
         </b-col>
@@ -270,19 +270,16 @@ form {
   margin: 1rem;
 }
 
-@media only screen and (max-width: 320px) {
-  button {
-    font-size: 0.5rem;
-  }
-}
-
 .btn-group button {
-  margin: 0 5px;
+  margin: 0 1rem;
   border-radius: 1rem;
   width: 4rem;
   font-size: 0.5rem;
 }
-.actions {
-  margin: 1rem 2rem;
+
+@media only screen and (min-width: 600px) {
+  .actions {
+    margin: 1rem 2rem;
+  }
 }
 </style>
