@@ -176,4 +176,7 @@ a.settings {
   color: black;
   font-size: 1.5rem;
 }
+input {
+  text-transform: lowercase;
+}
 </style>

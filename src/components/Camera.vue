@@ -13,18 +13,24 @@
       </b-button-group>
     </div>
     <form class>
-        <b-form-select
-          v-model="selectedDevice"
-          :options="options"
-          v-on:change="deviceChange()"
-          size="sm"
-        ></b-form-select>
+      <b-form-select
+        v-model="selectedDevice"
+        :options="options"
+        v-on:change="deviceChange()"
+        size="sm"
+      ></b-form-select>
     </form>
 
-    <div id="container">
-      <video playsinline autoplay></video>
-      <canvas></canvas>
-    </div>
+    <b-container>
+      <b-row >
+        <b-col sm="12" md="6">
+          <video playsinline autoplay></video>
+        </b-col>
+        <b-col sm="12" md="6">
+          <canvas></canvas>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
@@ -260,9 +266,9 @@ select option:disabled {
   color: lightgray;
   font-weight: bold;
 }
-/* select {
+form {
   margin: 1rem;
-} */
+}
 
 @media only screen and (max-width: 320px) {
   button {
