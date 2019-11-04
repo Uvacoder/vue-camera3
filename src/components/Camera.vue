@@ -7,11 +7,11 @@
         <b-button v-if="cameraState" :disabled="isStartEnabled" v-on:click="snapshot">Snapsot</b-button>
         <b-button v-if="!cameraState" :disabled="!isPhoto" v-on:click="download">Download</b-button>
         <div v-b-tooltip.hover title="Settings are required to upload photos.">
-        <b-button
-          :disabled="!isPhoto || settings.cloudname.length === 0 || settings.preset.length === 0"
-          v-on:click="upload"
-          v-if="!cameraState"
-        >Upload</b-button>
+          <b-button
+            :disabled="!isPhoto || settings.cloudname.length === 0 || settings.preset.length === 0"
+            v-on:click="upload"
+            v-if="!cameraState"
+          >Upload</b-button>
         </div>
       </b-button-group>
       <form class>
@@ -157,7 +157,7 @@ export default {
         .clearRect(0, 0, this.canvas.width, this.canvas.height);
       // this.isStartEnabled = true;
       this.isPhoto = false;
-      this.cameraState = false
+      this.cameraState = false;
     },
     start: function() {
       console.log("start");
@@ -205,8 +205,10 @@ export default {
       this.stop();
       //don't change selected device
       this.setConstraints();
-      this.getMedia().then((this.isStartEnabled = false));
-      this.cameraState = true
+      this.getMedia().then(result => {
+        this.isStartEnabled = false;
+        this.cameraState = true;
+      });
     },
     setConstraints: function() {
       const videoContstraints = {};
@@ -262,10 +264,9 @@ export default {
         this.setConstraints();
       })
       .then(res => {
-        this.getMedia();
-      })
-      .then(res => {
-        this.isStartEnabled = false;
+        this.getMedia().then(res => {
+          this.isStartEnabled = false;
+        });
       });
   }
 };
