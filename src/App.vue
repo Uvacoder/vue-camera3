@@ -1,64 +1,74 @@
 <template>
   <div id="app">
-    <b-nav>
-      <b-nav-item>
-        <router-link to="/">Camera</router-link>
-      </b-nav-item>
-      <b-nav-item>
-        <router-link to="/gallery">Gallery</router-link>
-      </b-nav-item>
+    <b-container>
+      <b-row>
+        <b-col sm="12">
+          <b-nav>
+            <b-nav-item>
+              <router-link to="/">Camera</router-link>
+            </b-nav-item>
+            <b-nav-item>
+              <router-link to="/gallery">Gallery</router-link>
+            </b-nav-item>
 
-      <b-nav-item>
-        <!-- <div v-b-tooltip.hover title="Settings are required to upload photos."> -->
-          <b-button class="settings" v-b-modal.modal-prevent-closing>
-            <i class="fas fa-cog"></i>
-          </b-button>
+            <b-nav-item>
+              <!-- <div v-b-tooltip.hover title="Settings are required to upload photos."> -->
+              <b-button class="settings" v-b-modal.modal-prevent-closing>
+                <i class="fas fa-cog"></i>
+              </b-button>
 
-          <b-modal
-            id="modal-prevent-closing"
-            ref="modal"
-            title="Cloudinary Upload Info"
-            @show="resetModal"
-            @hidden="resetModal"
-            @ok="handleOk"
-          >
-            <form ref="form" @submit.stop.prevent="updateSettings">
-              <b-form-group
-                :state="cloudnameState"
-                label="Cloudname"
-                label-for="cloud-name-input"
-                invalid-feedback="Cloudname is required"
+              <b-modal
+                id="modal-prevent-closing"
+                ref="modal"
+                title="Cloudinary Upload Info"
+                @show="resetModal"
+                @hidden="resetModal"
+                @ok="handleOk"
               >
-                <b-form-input
-                  id="cloud-name-input"
-                  v-model="cloudname"
-                  :state="cloudnameState"
-                  required
-                ></b-form-input>
-              </b-form-group>
-              <b-form-group
-                :state="presetState"
-                label="Preset"
-                label-for="preset-input"
-                invalid-feedback="Preset is required"
-              >
-                <b-form-input id="preset-input" v-model="preset" :state="presetState" required></b-form-input>
-              </b-form-group>
-              <b-form-group>
-                <b-form-checkbox
-                  id="clearsettings"
-                  v-model="clearsettings"
-                  name="clearsettings"
-                  value="true"
-                  unchecked-value="false"
-                >Clear Settings</b-form-checkbox>
-              </b-form-group>
-            </form>
-          </b-modal>
-        <!-- </div> -->
-      </b-nav-item>
-    </b-nav>
-    <router-view></router-view>
+                <form ref="form" @submit.stop.prevent="updateSettings">
+                  <b-form-group
+                    :state="cloudnameState"
+                    label="Cloudname"
+                    label-for="cloud-name-input"
+                    invalid-feedback="Cloudname is required"
+                  >
+                    <b-form-input
+                      id="cloud-name-input"
+                      v-model="cloudname"
+                      :state="cloudnameState"
+                      required
+                    ></b-form-input>
+                  </b-form-group>
+                  <b-form-group
+                    :state="presetState"
+                    label="Preset"
+                    label-for="preset-input"
+                    invalid-feedback="Preset is required"
+                  >
+                    <b-form-input id="preset-input" v-model="preset" :state="presetState" required></b-form-input>
+                  </b-form-group>
+                  <b-form-group>
+                    <b-form-checkbox
+                      id="clearsettings"
+                      v-model="clearsettings"
+                      name="clearsettings"
+                      value="true"
+                      unchecked-value="false"
+                    >Clear Settings</b-form-checkbox>
+                  </b-form-group>
+                </form>
+              </b-modal>
+              <!-- </div> -->
+            </b-nav-item>
+          </b-nav>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col sm="12">
+          <router-view></router-view>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
@@ -166,7 +176,6 @@ export default {
 a.settings {
   color: black;
 }
-
 
 .settings i {
   font-size: 1rem;

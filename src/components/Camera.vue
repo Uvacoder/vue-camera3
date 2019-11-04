@@ -1,39 +1,51 @@
 <template>
   <div class="camera">
-    <div class="actions">
-      <b-button-group>
-        <b-button v-if="!cameraState" :disabled="isStartEnabled" v-on:click="start">Camera</b-button>
-        <b-button v-if="cameraState" :disabled="isStartEnabled" v-on:click="stop">Stop</b-button>
-        <b-button v-if="cameraState" :disabled="isStartEnabled" v-on:click="snapshot">Snapsot</b-button>
-        <b-button v-if="!cameraState" :disabled="!isPhoto" v-on:click="download">Download</b-button>
-        <div v-b-tooltip.hover title="Settings are required to upload photos.">
-          <b-button
-            :disabled="!isPhoto || settings.cloudname.length === 0 || settings.preset.length === 0"
-            v-on:click="upload"
-            v-if="!cameraState"
-          >Upload</b-button>
+    <b-row>
+      <b-col sm="12">
+        <div class="actions">
+          <b-button-group>
+            <b-button v-if="!cameraState" :disabled="isStartEnabled" v-on:click="start">Camera</b-button>
+            <b-button v-if="cameraState" :disabled="isStartEnabled" v-on:click="stop">Stop</b-button>
+            <b-button v-if="cameraState" :disabled="isStartEnabled" v-on:click="snapshot">Snapsot</b-button>
+            <b-button v-if="!cameraState" :disabled="!isPhoto" v-on:click="download">Download</b-button>
+            <div v-b-tooltip.hover title="Settings are required to upload photos.">
+              <b-button
+                :disabled="!isPhoto || settings.cloudname.length === 0 || settings.preset.length === 0"
+                v-on:click="upload"
+                v-if="!cameraState"
+              >Upload</b-button>
+            </div>
+          </b-button-group>
         </div>
-      </b-button-group>
-      <form class>
-        <b-form-select
-          v-model="selectedDevice"
-          :options="options"
-          v-on:change="deviceChange()"
-          size="sm"
-        ></b-form-select>
-      </form>
-    </div>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col sm="12">
+        <form class>
+          <b-form-select
+            v-model="selectedDevice"
+            :options="options"
+            v-on:change="deviceChange()"
+            size="sm"
+          ></b-form-select>
+        </form>
+      </b-col>
+    </b-row>
 
-    <b-container>
-      <b-row>
-        <b-col sm="12">
+    <b-row>
+      <b-col sm="12">
+        <div>
+          <!-- <b-row>-->
+          <!-- <b-col sm="12"> -->
           <video v-show="cameraState" playsinline autoplay></video>
-        </b-col>
-        <b-col sm="12">
+          <!-- </b-col> -->
+          <!-- <b-col sm="12"> -->
           <canvas v-show="!cameraState"></canvas>
-        </b-col>
-      </b-row>
-    </b-container>
+          <!-- </b-col>
+          </b-row>-->
+        </div>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
