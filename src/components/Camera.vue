@@ -35,14 +35,8 @@
     <b-row>
       <b-col sm="12">
         <div>
-          <!-- <b-row>-->
-          <!-- <b-col sm="12"> -->
           <video v-show="cameraState" playsinline autoplay></video>
-          <!-- </b-col> -->
-          <!-- <b-col sm="12"> -->
           <canvas v-show="!cameraState"></canvas>
-          <!-- </b-col>
-          </b-row>-->
         </div>
       </b-col>
     </b-row>

@@ -12,10 +12,9 @@
             </b-nav-item>
 
             <b-nav-item>
-              <!-- <div v-b-tooltip.hover title="Settings are required to upload photos."> -->
-              <b-button class="settings" v-b-modal.modal-prevent-closing>
+              <div class="settings" v-b-modal.modal-prevent-closing>
                 <i class="fas fa-cog"></i>
-              </b-button>
+              </div>
 
               <b-modal
                 id="modal-prevent-closing"
@@ -183,7 +182,7 @@ a.settings {
 
 .nav-item a a {
   color: black;
-  font-size: 1.5rem;
+  /* font-size: 1.5rem; */
 }
 input {
   text-transform: lowercase;
