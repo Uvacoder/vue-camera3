@@ -206,6 +206,7 @@ export default {
       //don't change selected device
       this.setConstraints();
       this.getMedia().then((this.isStartEnabled = false));
+      this.cameraState = true
     },
     setConstraints: function() {
       const videoContstraints = {};
