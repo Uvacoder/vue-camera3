@@ -9,7 +9,7 @@
       </b-nav-item>
 
       <b-nav-item>
-        <div v-b-tooltip.hover title="Settings are required to upload photos.">
+        <!-- <div v-b-tooltip.hover title="Settings are required to upload photos."> -->
           <b-button class="settings" v-b-modal.modal-prevent-closing>
             <i class="fas fa-cog"></i>
           </b-button>
@@ -55,7 +55,7 @@
               </b-form-group>
             </form>
           </b-modal>
-        </div>
+        <!-- </div> -->
       </b-nav-item>
     </b-nav>
     <router-view></router-view>

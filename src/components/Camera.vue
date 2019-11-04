@@ -2,14 +2,17 @@
   <div class="camera">
     <div class="actions">
       <b-button-group>
-        <b-button :disabled="!isStartEnabled" v-on:click="start">Start</b-button>
-        <b-button :disabled="isStartEnabled" v-on:click="stop">Stop</b-button>
-        <b-button :disabled="isStartEnabled" v-on:click="snapshot">Snapsot</b-button>
-        <b-button :disabled="!isPhoto" v-on:click="download">Download</b-button>
+        <b-button v-if="!cameraState" :disabled="isStartEnabled" v-on:click="start">Camera</b-button>
+        <b-button v-if="cameraState" :disabled="isStartEnabled" v-on:click="stop">Stop</b-button>
+        <b-button v-if="cameraState" :disabled="isStartEnabled" v-on:click="snapshot">Snapsot</b-button>
+        <b-button v-if="!cameraState" :disabled="!isPhoto" v-on:click="download">Download</b-button>
+        <div v-b-tooltip.hover title="Settings are required to upload photos.">
         <b-button
           :disabled="!isPhoto || settings.cloudname.length === 0 || settings.preset.length === 0"
           v-on:click="upload"
+          v-if="!cameraState"
         >Upload</b-button>
+        </div>
       </b-button-group>
       <form class>
         <b-form-select
@@ -23,11 +26,11 @@
 
     <b-container>
       <b-row>
-        <b-col sm="12" md="6">
-          <video playsinline autoplay></video>
+        <b-col sm="12">
+          <video v-show="cameraState" playsinline autoplay></video>
         </b-col>
-        <b-col sm="12" md="6">
-          <canvas></canvas>
+        <b-col sm="12">
+          <canvas v-show="!cameraState"></canvas>
         </b-col>
       </b-row>
     </b-container>
@@ -76,7 +79,8 @@ export default {
       devices: [],
       options: [],
       constraints: {},
-      selectedDevice: null
+      selectedDevice: null,
+      cameraState: true
       // cloudname: '',
       // preset:''
     };
@@ -134,6 +138,7 @@ export default {
         .drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
       this.fileData = this.canvas.toDataURL("image/jpeg");
       this.isPhoto = true;
+      this.cameraState = false;
     },
     stop: function() {
       console.log("stop");
@@ -150,15 +155,19 @@ export default {
       this.canvas
         .getContext("2d")
         .clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.isStartEnabled = true;
+      // this.isStartEnabled = true;
       this.isPhoto = false;
+      this.cameraState = false
     },
     start: function() {
       console.log("start");
       this.stop();
       //when starting up again use first option
-      this.selectedDevice = this.options[0].value
-      this.getMedia().then((this.isStartEnabled = false));
+      this.selectedDevice = this.options[0].value;
+      this.getMedia().then(result => {
+        this.isStartEnabled = false;
+        this.cameraState = true;
+      });
     },
     download: function() {
       console.log("downlaod");
@@ -183,10 +192,10 @@ export default {
         this.stream = await navigator.mediaDevices.getUserMedia(
           this.constraints
         );
-        window.stream = this.stream
-        this.currentStream = stream
-        this.video.srcObject = stream
-        return true
+        window.stream = this.stream;
+        this.currentStream = stream;
+        this.video.srcObject = stream;
+        return true;
       } catch (err) {
         throw err;
         console.log("getmedia", err);
@@ -218,7 +227,7 @@ export default {
     getDevices: async function() {
       if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
         console.log("enumerateDevices() not supported.");
-        return false
+        return false;
       }
       try {
         let allDevices = await navigator.mediaDevices.enumerateDevices();
@@ -248,7 +257,7 @@ export default {
     this.getDevices()
       .then(res => {
         //when first loaded selected device can use 1st option
-        this.selectedDevice = this.options[0].value
+        this.selectedDevice = this.options[0].value;
         this.setConstraints();
       })
       .then(res => {
@@ -278,8 +287,9 @@ form {
 @media only screen and (min-width: 600px) {
   .btn-group button {
     margin: 0 0.5em;
-    border-radius: 1em;
-    font-size: 0.5em;
+    border-radius: 1em !important;
+    font-size: 1em;
+    width: 6em;
   }
 }
 </style>
