@@ -16,7 +16,7 @@ export default {
     //if these aren't set don't allow browse
     this.myGallery = cloudinary.galleryWidget({
       container: "#images",
-      cloudName: "picturecloud7",
+      cloudName: this.cloudname,
       mediaAssets: [{ tag: "browser_upload" }]
     });
     // this.myGallery = cloudinary.galleryWidget({
@@ -31,10 +31,20 @@ export default {
   },
   data() {
     return {
-      myGallery: null,
-      cloudname: "",
-      presest: ""
+      myGallery: null
+      // cloudname: "",
+      // presest: ""
     };
+  },
+  computed: {
+    cloudname: {
+      get() {
+        return this.$store.state.settings.cloudname;
+      },
+      set(value) {
+        this.$store.commit("updateCloudname", value);
+      }
+    }
   }
 };
 </script>
