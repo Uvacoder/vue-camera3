@@ -1,5 +1,6 @@
 <template>
   <div class="camera">
+     <!-- <p>Camera State:{{cameraState}}</p> -->
     <b-row>
       <b-col sm="12">
         <div class="actions">
@@ -7,12 +8,12 @@
             <b-button v-if="!cameraState" :disabled="isStartEnabled" v-on:click="start">Camera</b-button>
             <b-button v-if="cameraState" :disabled="isStartEnabled" v-on:click="stop">Stop</b-button>
             <b-button v-if="cameraState" :disabled="isStartEnabled" v-on:click="snapshot">Snapsot</b-button>
-            <b-button v-if="!cameraState" :disabled="!isPhoto" v-on:click="download">Download</b-button>
-            <div v-b-tooltip.hover title="Settings are required to upload photos.">
+            <b-button v-if="isPhoto" :disabled="!isPhoto" v-on:click="download">Download</b-button>
+            <div v-if="isPhoto" v-b-tooltip.hover title="Settings are required to upload photos.">
               <b-button
                 :disabled="!isPhoto || settings.cloudname.length === 0 || settings.preset.length === 0"
                 v-on:click="upload"
-                v-if="!cameraState"
+                v-if="isPhoto"
               >Upload</b-button>
             </div>
           </b-button-group>
@@ -87,8 +88,6 @@ export default {
       constraints: {},
       selectedDevice: null,
       cameraState: true
-      // cloudname: '',
-      // preset:''
     };
   },
   computed: mapState(["settings"]),
@@ -153,17 +152,18 @@ export default {
         this.currentStream.getTracks().forEach(track => {
           track.stop();
         });
-        this.video.srcObject = null;
+        this.video.srcObject = null
       }
 
-      this.video.removeAttribute("src");
-      this.video.load();
+      this.video.removeAttribute("src")
+      this.video.load()
       this.canvas
         .getContext("2d")
         .clearRect(0, 0, this.canvas.width, this.canvas.height);
       // this.isStartEnabled = true;
       this.isPhoto = false;
       this.cameraState = false;
+      console.log("end stop",this.cameraState)
     },
     start: function() {
       console.log("start");

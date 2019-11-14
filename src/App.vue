@@ -79,13 +79,13 @@ export default {
   name: "app",
   created: function() {
     console.log("App created", this.cloudname, this.preset);
-    // if (this.$ls.get("cloudname")) {
-    //   this.cloudname = this.$ls.get("cloudname");
-    //   console.log("App.vue cloudname", this.cloudname);
-    // }
-    // if (this.$ls.get("preset")) {
-    //   this.preset = this.$ls.get("preset");
-    // }
+    if (this.$ls.get("cloudname")) {
+      this.cloudname = this.$ls.get("cloudname");
+      // console.log("App.vue cloudname", this.cloudname);
+    }
+    if (this.$ls.get("preset")) {
+      this.preset = this.$ls.get("preset");
+    }
   },
   data() {
     return {
@@ -139,6 +139,8 @@ export default {
         this.cloudname = "";
         this.preset = "";
         this.clearsettings = "false";
+        // remove from local storage
+        this.$ls.clear();
         this.$nextTick(() => {
           this.$refs.modal.hide();
         });
@@ -150,10 +152,6 @@ export default {
           return;
         }
       }
-
-      // update local storage
-      // this.$ls.set("cloudname", this.cloudname, this.expire);
-      // this.$ls.set("preset", this.preset, this.expire);
 
       // Hide the modal manually
       this.$nextTick(() => {
