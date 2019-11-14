@@ -228,8 +228,6 @@ export default {
           exact: this.selectedDevice
         };
       }
-       alert("vc.facingmode",videoContstraints.facingMode)
-              alert("vc.deviceId"+JSON.stringify(videoContstraints.deviceId))
 
       this.constraints = {
         video: videoContstraints,
@@ -239,12 +237,10 @@ export default {
     getDevices: async function() {
       if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
         console.log("enumerateDevices() not supported.");
-        alert("enumerate not supported")
         return false;
       }
       try {
         let allDevices = await navigator.mediaDevices.enumerateDevices();
-        alert("all devices"+JSON.stringify(allDevices))
         for (let mediaDevice of allDevices) {
           // console.log("enumerate", mediaDevice)
           if (mediaDevice.kind === "videoinput") {
@@ -272,11 +268,9 @@ export default {
       .then(res => {
         //when first loaded selected device can use 1st option
         this.selectedDevice = this.options[0].value;
-        alert("selectedDevice"+this.selectedDevice)
         this.setConstraints();
       })
       .then(res => {
-        alert("getmedia"+JSON.stringify(this.constraints))
         this.getMedia().then(res => {
           this.isStartEnabled = false;
         });
