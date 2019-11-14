@@ -220,7 +220,7 @@ export default {
       const videoContstraints = {};
       //set selected to highest option
       // this.selectedDevice = this.options[this.options.length - 1].value;
-
+     
       if (this.selectedDevice === null) {
         videoContstraints.facingMode = "environment";
       } else {
@@ -228,6 +228,9 @@ export default {
           exact: this.selectedDevice
         };
       }
+       alert("vc.facingmode",videoContstraints.facingMode)
+              alert("vc.deviceId"+JSON.stringify(videoContstraints.deviceId))
+
       this.constraints = {
         video: videoContstraints,
         audio: false
@@ -236,10 +239,12 @@ export default {
     getDevices: async function() {
       if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
         console.log("enumerateDevices() not supported.");
+        alert("enumerate not supported")
         return false;
       }
       try {
         let allDevices = await navigator.mediaDevices.enumerateDevices();
+        alert("all devices"+JSON.stringify(allDevices))
         for (let mediaDevice of allDevices) {
           // console.log("enumerate", mediaDevice)
           if (mediaDevice.kind === "videoinput") {
@@ -267,9 +272,11 @@ export default {
       .then(res => {
         //when first loaded selected device can use 1st option
         this.selectedDevice = this.options[0].value;
+        alert("selectedDevice"+this.selectedDevice)
         this.setConstraints();
       })
       .then(res => {
+        alert("getmedia"+JSON.stringify(this.constraints))
         this.getMedia().then(res => {
           this.isStartEnabled = false;
         });
