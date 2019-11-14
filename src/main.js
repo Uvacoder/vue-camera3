@@ -11,7 +11,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 //set up local storage
 import Storage from 'vue-ls';
 let options = {
-  namespace: 'vuejs__', // key prefix
+  namespace: 'camera__', // key prefix
 }; 
 Vue.use(Storage, options);
 
