@@ -24,7 +24,7 @@
                 @hidden="resetModal"
                 @ok="handleOk"
               >
-                <form ref="form" @submit.stop.prevent="updateSettings">
+                <form ref="form" @submit.stop.prevent="handleSubmit">
                   <b-form-group
                     :state="cloudnameState"
                     label="Cloudname"
@@ -118,10 +118,24 @@ export default {
   },
   methods: {
     checkFormValidity() {
-      // const valid = this.$refs.form.checkValidity();
-      // this.cloudnameState = valid ? "valid" : "invalid";
-      // return valid;
-      return true;
+      if (
+        this.cloudname &&
+        this.cloudname.length > 0 &&
+        this.preset &&
+        this.preset.length > 0
+      )
+        return true;
+      else {
+        this.$bvToast.toast(
+          `Enter cloudname and preset to complete form save.`,
+          {
+            title: "Settings",
+            autoHideDelay: 5000,
+            appendToast: false
+          }
+        );
+        return false;
+      }
     },
     resetModal() {
       this.cloudnameState = null;
@@ -150,6 +164,9 @@ export default {
         if (!this.checkFormValidity()) {
           console.log("settings data not valid");
           return;
+        } else {
+          this.$ls.set("cloudname", this.cloudname, this.expire);
+          this.$ls.set("preset", this.preset, this.expire);
         }
       }
 

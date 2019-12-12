@@ -11,19 +11,19 @@ export default {
 
   mounted() {
     //get cloudname and preset from local storage
-    // this.cloudname = this.$ls.get("cloudname")
-    // this.preset = this.$ls.get("preset")
+    if (this.$ls.get("cloudname")) {
+      this.cloudname = this.$ls.get("cloudname");
+      // console.log("App.vue cloudname", this.cloudname);
+    }
+    if (this.$ls.get("preset")) {
+      this.preset = this.$ls.get("preset");
+    }
     //if these aren't set don't allow browse
     this.myGallery = cloudinary.galleryWidget({
       container: "#images",
       cloudName: this.cloudname,
       mediaAssets: [{ tag: "browser_upload" }]
     });
-    // this.myGallery = cloudinary.galleryWidget({
-    //   container: "#images",
-    //   cloudName: "demo",
-    //   mediaAssets: [{ tag: "shoe", mediaType: "video" }]
-    // });
     this.myGallery.render();
   },
   beforeDestroy: function() {
@@ -32,8 +32,6 @@ export default {
   data() {
     return {
       myGallery: null
-      // cloudname: "",
-      // presest: ""
     };
   },
   computed: {

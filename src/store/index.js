@@ -20,9 +20,4 @@ const store = new Vuex.Store({
     }
 })
 
-//   editTodo (state, { todo, text = todo.text, done = todo.done }) {
-//     todo.text = text
-//     todo.done = done
-//   }
-
 export default store
