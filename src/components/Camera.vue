@@ -9,7 +9,7 @@
             <b-button v-if="cameraState" :disabled="isStartEnabled" v-on:click="stop">Stop</b-button>
             <b-button v-if="cameraState" :disabled="isStartEnabled" v-on:click="snapshot">Snapsot</b-button>
             <b-button v-if="isPhoto" :disabled="!isPhoto" v-on:click="download">Download</b-button>
-            <div v-if="isPhoto" v-b-tooltip.hover title="Settings are required to upload photos.">
+            <div v-if="isPhoto" v-b-tooltip.hover>
               <b-button
                 :disabled="!isPhoto || settings.cloudname.length === 0 || settings.preset.length === 0"
                 v-on:click="upload"
@@ -279,7 +279,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 button:disabled {
   background: lightgray;
