@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div>
-      <b-navbar toggleable="lg" type="dark" variant="info">
+      <b-navbar class="nav-bg" toggleable="lg" type="dark">
         <b-navbar-brand href="#">Vue Camera</b-navbar-brand>
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -197,15 +197,16 @@ a.settings {
   font-size: 1rem;
 }
 
-/* .nav-item a a { */
-  /* color: black; */
-  /* font-size: 1.5rem; */
-/* } */
 input {
   text-transform: lowercase;
 }
 .routes {
   margin: 10px 0;
 }
-
+.nav-bg {
+  background-color: #000;
+}
+.navbar-dark .navbar-nav .nav-link {
+  color: #fff !
+}
 </style>
