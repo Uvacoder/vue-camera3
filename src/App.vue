@@ -206,7 +206,15 @@ input {
 .nav-bg {
   background-color: #000;
 }
-.navbar-dark .navbar-nav .nav-link {
-  color: #fff !
+.router-link-exact-active {
+  color: white !important;
+  font-weight: bold;
 }
+.nav-link {
+  color: white !important;
+}
+.nav-link.disabled{
+  color: rgba(255,255,255,.75) !important
+}
+
 </style>
