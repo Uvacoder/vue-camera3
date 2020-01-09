@@ -61,7 +61,36 @@
                 </form>
               </b-modal>
             </b-nav-item>
+         
+            <b-nav-item>
+              <div class="settings" v-b-modal.info-modal>
+                <i class="fas fa-info-circle"></i>
+              </div>
+
+              <b-modal
+                id="info-modal"
+                ref="modal"
+                title="Instructions"
+              >
+                <p>You need to <a href="https://cloudinary.com/users/register/free" target="_blank">register for a Cloudinary account</a> to get a cloud name.</p>
+                <p>
+                  Once you have an account go to settings | upload to create an unsigned
+                  preset.
+                </p>
+                <p>
+                  For information on creating an unsigned upload preset, look
+                  <a
+                    href="https://cloudinary.com/documentation/upload_images?query=settings%20upload%20preset&c_query=Upload%20presets#upload_presets"
+                    target="_blank"
+                    >here.</a  Be sure to choose the unsigned option when creating the upload preset.
+                  >
+                </p>
+                <p>Click on the settings icon (gear) to enter your cloud name and preset. 
+                    This will allow you to upload your images to cloudinary and then view them using the Gallery navigation link.</p>
+              </b-modal>
+            </b-nav-item>
           </b-navbar-nav>
+
         </b-collapse>
       </b-navbar>
     </div>
