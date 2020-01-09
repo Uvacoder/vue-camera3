@@ -7,7 +7,7 @@
           <b-button-group>
             <b-button v-if="!cameraState" :disabled="isStartEnabled" v-on:click="start">Camera</b-button>
             <b-button v-if="cameraState" :disabled="isStartEnabled" v-on:click="stop">Stop</b-button>
-            <b-button v-if="cameraState" :disabled="isStartEnabled" v-on:click="snapshot">Snapsot</b-button>
+            <b-button v-if="cameraState" :disabled="isStartEnabled" v-on:click="snapshot">Snapshot</b-button>
             <b-button v-if="isPhoto" :disabled="!isPhoto" v-on:click="download">Download</b-button>
             <div v-if="isPhoto" v-b-tooltip.hover>
               <b-button
@@ -54,7 +54,7 @@ async function uploadToCloudinary(cloudName, preset, fileData) {
     let url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
     console.log(url);
     fd.append("upload_preset", preset);
-    fd.append("tags", "browser_upload"); // Optional - add tag for image admin in Cloudinary
+    fd.append("tags", "browser_upload"); 
     fd.append("file", fileData);
     let res = await axios({
       method: "post",
@@ -94,7 +94,6 @@ export default {
   methods: {
     upload: function() {
       console.log("upload");
-
       if (
         this.settings.cloudname.length === 0 ||
         this.settings.preset.length === 0
@@ -185,12 +184,14 @@ export default {
           .getContext("2d")
           .drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
         let a = document.createElement("a");
+        a.classList.add("hidden-link")
         a.href = this.fileData;
-        a.textContent = "photo";
+        a.textContent = "";
         a.target = "_blank";
         a.download = "photo.jpeg";
         document.querySelector("body").append(a);
         a.click();
+        document.querySelector("body").remove(a);
       }
     },
     getMedia: async function() {
@@ -299,5 +300,8 @@ form {
     font-size: 1em;
     width: 6em;
   }
+}
+.hidden-link{
+  visibility: hidden;
 }
 </style>
