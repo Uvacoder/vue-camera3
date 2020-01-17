@@ -1,6 +1,6 @@
 <template>
   <div class="camera">
-     <!-- <p>Camera State:{{cameraState}}</p> -->
+    <!-- <p>Camera State:{{cameraState}}</p> -->
     <b-row>
       <b-col sm="12">
         <div class="actions">
@@ -52,9 +52,8 @@ async function uploadToCloudinary(cloudName, preset, fileData) {
   try {
     let fd = new FormData();
     let url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
-    console.log(url);
     fd.append("upload_preset", preset);
-    fd.append("tags", "browser_upload"); 
+    fd.append("tags", "browser_upload");
     fd.append("file", fileData);
     let res = await axios({
       method: "post",
@@ -63,7 +62,6 @@ async function uploadToCloudinary(cloudName, preset, fileData) {
     });
     return await res.data;
   } catch (err) {
-    console.log("error upload:", err);
     throw err;
   }
 }
@@ -93,12 +91,10 @@ export default {
   computed: mapState(["settings"]),
   methods: {
     upload: function() {
-      console.log("upload");
       if (
         this.settings.cloudname.length === 0 ||
         this.settings.preset.length === 0
       ) {
-        console.log("error: upload missing cloudname or preset");
         this.$bvToast.toast(
           `Upload to Cloudinary unsuccessful: use settings to provide cloudname and preset`,
           {
@@ -115,7 +111,6 @@ export default {
         this.fileData
       )
         .then(result => {
-          console.log(result);
           this.$bvToast.toast(`Upload to Cloudinary successful`, {
             title: "Cloudinary Upload",
             autoHideDelay: 5000,
@@ -134,7 +129,6 @@ export default {
         });
     },
     snapshot: function() {
-      console.log("snapshot");
       this.canvas.width = this.video.videoWidth;
       this.canvas.height = this.video.videoHeight;
       this.canvas
@@ -143,29 +137,31 @@ export default {
       this.fileData = this.canvas.toDataURL("image/jpeg");
       this.isPhoto = true;
       this.cameraState = false;
+      //remove any hidden links used for download
+      let hiddenLinks = document.querySelectorAll(".hidden_links");
+      for (let hiddenLink of hiddenLinks) {
+        document.querySelector("body").remove(hiddenLink);
+      }
     },
     stop: function() {
-      console.log("stop");
       this.video.pause();
       if (this.currentStream) {
         this.currentStream.getTracks().forEach(track => {
           track.stop();
         });
-        this.video.srcObject = null
+        this.video.srcObject = null;
       }
 
-      this.video.removeAttribute("src")
-      this.video.load()
+      this.video.removeAttribute("src");
+      this.video.load();
       this.canvas
         .getContext("2d")
         .clearRect(0, 0, this.canvas.width, this.canvas.height);
       // this.isStartEnabled = true;
       this.isPhoto = false;
       this.cameraState = false;
-      console.log("end stop",this.cameraState)
     },
     start: function() {
-      console.log("start");
       this.stop();
       //when starting up again use first option
       this.selectedDevice = this.options[0].value;
@@ -175,23 +171,20 @@ export default {
       });
     },
     download: function() {
-      console.log("downlaod");
       if (this.fileData) {
-        console.log("download");
         this.canvas.width = this.video.videoWidth;
         this.canvas.height = this.video.videoHeight;
         this.canvas
           .getContext("2d")
           .drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
         let a = document.createElement("a");
-        a.classList.add("hidden-link")
+        a.classList.add("hidden-link");
         a.href = this.fileData;
         a.textContent = "";
         a.target = "_blank";
         a.download = "photo.jpeg";
         document.querySelector("body").append(a);
         a.click();
-        document.querySelector("body").remove(a);
       }
     },
     getMedia: async function() {
@@ -205,7 +198,6 @@ export default {
         return true;
       } catch (err) {
         throw err;
-        console.log("getmedia", err);
       }
     },
     deviceChange: function() {
@@ -219,8 +211,6 @@ export default {
     },
     setConstraints: function() {
       const videoContstraints = {};
-      //set selected to highest option
-      // this.selectedDevice = this.options[this.options.length - 1].value;
      
       if (this.selectedDevice === null) {
         videoContstraints.facingMode = "environment";
@@ -237,13 +227,11 @@ export default {
     },
     getDevices: async function() {
       if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-        console.log("enumerateDevices() not supported.");
         return false;
       }
       try {
         let allDevices = await navigator.mediaDevices.enumerateDevices();
         for (let mediaDevice of allDevices) {
-          // console.log("enumerate", mediaDevice)
           if (mediaDevice.kind === "videoinput") {
             let option = {};
             option.text = mediaDevice.label;
@@ -254,17 +242,13 @@ export default {
         }
         return true;
       } catch (err) {
-        console.log("getDevices", err);
         throw err;
       }
-      console.log("devices", this.devices);
     }
   },
   mounted() {
-    console.log("camera mounted cloudname", this.settings.cloudname);
     this.canvas = document.querySelector("canvas");
     this.video = document.querySelector("video");
-    // this.options.push({ text: "Select Device", value: "", disable: true });
     this.getDevices()
       .then(res => {
         //when first loaded selected device can use 1st option
@@ -301,7 +285,7 @@ form {
     width: 6em;
   }
 }
-.hidden-link{
+.hidden-link {
   visibility: hidden;
 }
 </style>

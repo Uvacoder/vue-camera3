@@ -112,10 +112,8 @@ import { mapActions } from "vuex";
 export default {
   name: "app",
   created: function() {
-    console.log("App created", this.cloudname, this.preset);
     if (this.$ls.get("cloudname")) {
       this.cloudname = this.$ls.get("cloudname");
-      // console.log("App.vue cloudname", this.cloudname);
     }
     if (this.$ls.get("preset")) {
       this.preset = this.$ls.get("preset");
@@ -193,7 +191,6 @@ export default {
       } else {
         // Exit when the form isn't valid
         if (!this.checkFormValidity()) {
-          console.log("settings data not valid");
           return;
         } else {
           this.$ls.set("cloudname", this.cloudname, this.expire);

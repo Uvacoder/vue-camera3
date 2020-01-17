@@ -13,7 +13,6 @@ export default {
     //get cloudname and preset from local storage
     if (this.$ls.get("cloudname")) {
       this.cloudname = this.$ls.get("cloudname");
-      // console.log("App.vue cloudname", this.cloudname);
     }
     if (this.$ls.get("preset")) {
       this.preset = this.$ls.get("preset");
