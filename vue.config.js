@@ -8,7 +8,7 @@ module.exports = {
     },
     chainWebpack: config => {
         //turn off elint for webpack transpile
-        config.module.rules.delete('eslint');
+        // config.module.rules.delete('eslint');
     },
     runtimeCompiler: true,
     css: {
