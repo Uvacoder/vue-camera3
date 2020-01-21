@@ -1,4 +1,20 @@
 # vue-camera
+Run [demo](https://www.beckypeltz.me/vue-camera/index.html)  
+
+## Settings
+In order to use the demo you need to create a [free Cloudinary Account](https://cloudinary.com/users/register/free) and an [unsigned upload preset](https://cloudinary.com/documentation/upload_images#upload_presets). 
+
+### Reference Cloudinary Upload API App
+See [code](https://github.com/cloudinary-devs/training-vuejs) and [demo](https://cloudinary-devs.github.io/training-vuejs/index.html) 
+
+
+
+### APIs used
+This is a vue.js application that uses
+* webRTC API to gather image data from a device's camer
+* the Cloudinary Upload API to upload image data to Cloudinary
+* the Cloudinary Product Gallery wrapped in a Vue.js view
+
 
 ## Project setup
 ```
@@ -15,11 +31,6 @@ npm run serve
 npm run build
 ```
 
-### Run your tests
-```
-npm run test
-```
-
 ### Lints and fixes files
 ```
 npm run lint
@@ -28,14 +39,4 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
- <a
-      href="https://github.com/rebeccapeltz/vue-camera"
-      title="View source for this page on GitHub"
-      id="viewSource"
-    >
-      View
-      source on GitHub
-    </a>
-
-
-https://ready.mobi/
+ 
