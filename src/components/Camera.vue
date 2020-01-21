@@ -116,6 +116,10 @@ export default {
             autoHideDelay: 5000,
             appendToast: false
           });
+          this.cameraState = true;
+
+          // eslint-disable-next-line no-console
+          console.log("upload to cloudinary:", result);
         })
         .catch(err => {
           this.$bvToast.toast(
@@ -126,6 +130,8 @@ export default {
               appendToast: false
             }
           );
+          // eslint-disable-next-line no-console
+          console.log("upload to cloudinary error:", err);
         });
     },
     snapshot: function() {
@@ -157,7 +163,6 @@ export default {
       this.canvas
         .getContext("2d")
         .clearRect(0, 0, this.canvas.width, this.canvas.height);
-      // this.isStartEnabled = true;
       this.isPhoto = false;
       this.cameraState = false;
     },
@@ -168,6 +173,8 @@ export default {
       this.getMedia().then(result => {
         this.isStartEnabled = false;
         this.cameraState = true;
+        // eslint-disable-next-line no-console
+        console.log("start camera:", result);
       });
     },
     download: function() {
@@ -193,8 +200,8 @@ export default {
           this.constraints
         );
         window.stream = this.stream;
-        this.currentStream = stream;
-        this.video.srcObject = stream;
+        this.currentStream = window.stream;
+        this.video.srcObject = window.stream;
         return true;
       } catch (err) {
         throw err;
@@ -207,11 +214,13 @@ export default {
       this.getMedia().then(result => {
         this.isStartEnabled = false;
         this.cameraState = true;
+        // eslint-disable-next-line no-console
+        console.log("device change:", result);
       });
     },
     setConstraints: function() {
       const videoContstraints = {};
-     
+
       if (this.selectedDevice === null) {
         videoContstraints.facingMode = "environment";
       } else {
@@ -254,10 +263,14 @@ export default {
         //when first loaded selected device can use 1st option
         this.selectedDevice = this.options[0].value;
         this.setConstraints();
+        // eslint-disable-next-line no-console
+        console.log("get devices:", res);
       })
-      .then(res => {
+      .then(() => {
         this.getMedia().then(res => {
           this.isStartEnabled = false;
+          // eslint-disable-next-line no-console
+          console.log("get media", res);
         });
       });
   }

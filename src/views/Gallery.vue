@@ -18,6 +18,8 @@ export default {
       this.preset = this.$ls.get("preset");
     }
     //if these aren't set don't allow browse
+    /*global cloudinary*/
+    /*eslint no-undef: "error"*/
     this.myGallery = cloudinary.galleryWidget({
       container: "#images",
       cloudName: this.cloudname,
@@ -46,8 +48,8 @@ export default {
 };
 </script>
 
-<styles scoped>
-#images{
+<style scoped>
+#images {
   width: 80%;
   height: 20%;
 }

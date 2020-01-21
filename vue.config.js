@@ -1,4 +1,4 @@
-const path = require('path');
+require('path');
 module.exports = {
     configureWebpack: {
         resolve: {
@@ -6,10 +6,10 @@ module.exports = {
             alias: require('./aliases.config').webpack
         }
     },
-    chainWebpack: config => {
+    // chainWebpack: config => {
         //turn off elint for webpack transpile
         // config.module.rules.delete('eslint');
-    },
+    // },
     runtimeCompiler: true,
     css: {
         sourceMap: true
